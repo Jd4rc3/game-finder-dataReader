@@ -15,9 +15,11 @@ builder.Services.AddSwaggerGen();
 
 var settings = builder.Configuration.GetRequiredSection(nameof(MongoConnection)).Get<MongoConnection>();
 
-builder.Services.AddSingleton<IContext>(_ => new Context(settings.ConnectionString,settings.DatabaseName));
-builder.Services.AddTransient<IParameterRepository,MongoAdapter>();
+builder.Services.AddSingleton<IContext>(_ => new Context(settings.ConnectionString, settings.DatabaseName));
+builder.Services.AddTransient<IParameterRepository, MongoAdapter>();
 builder.Services.AddTransient<CreateParameterUseCase>();
+builder.Services.AddTransient<ReadParameterUseCase>();
+builder.Services.AddTransient<UpdateParameterUseCase>();
 
 var app = builder.Build();
 

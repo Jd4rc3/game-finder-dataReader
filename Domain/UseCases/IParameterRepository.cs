@@ -9,4 +9,6 @@ public interface IParameterRepository
     Task<IEnumerable<Parameter>> GetAll();
 
     Task<Parameter> GetByName(string name);
+
+    Task<Parameter> Update(Parameter parameter);
 }

@@ -1,4 +1,3 @@
-
 using Domain.Models;
 
 namespace Domain.UseCases;
@@ -15,15 +14,5 @@ public class CreateParameterUseCase
     public Task CreateParameter(Parameter parameter)
     {
         return _repository.Create(parameter);
-    }
-
-    public Task<IEnumerable<Parameter>> ReadAll()
-    {
-        return _repository.GetAll();
-    }
-
-    public Task<Parameter> ReadByName(string name)
-    {
-        return _repository.GetByName(name);
     }
 }
