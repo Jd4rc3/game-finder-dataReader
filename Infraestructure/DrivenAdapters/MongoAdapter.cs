@@ -40,14 +40,34 @@ public class MongoAdapter : IParameterRepository
         var document =
             await _context.Parameters.FindOneAndUpdateAsync(param => param.Name.Equals(parameter.Name),
                 updateDefinition);
-        
+
         if (document == null)
         {
-            throw new BusinessException($"Parameter with name \"{parameter.Name}\" not found", HttpStatusCode.BadRequest);
+            throw new BusinessException($"Parameter with name \"{parameter.Name}\" not found",
+                HttpStatusCode.BadRequest);
         }
 
         var result = document.ToDomain();
         result.Values = parameter.Values;
+
+        return result;
+    }
+
+    public async Task<Parameter> UpdateName(string oldName, string newName)
+    {
+        var updateDefinition = Builders<ParameterEntity>.Update.Set((param) => param.Name, newName);
+
+        var document =
+            await _context.Parameters.FindOneAndUpdateAsync(param => param.Name.Equals(oldName), updateDefinition);
+
+        if (document == null)
+        {
+            throw new BusinessException($"Parameter with name \"{oldName}\" not found",
+                HttpStatusCode.BadRequest);
+        }
+
+        var result = document.ToDomain();
+        result.Name = newName;
 
         return result;
     }

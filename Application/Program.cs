@@ -20,7 +20,8 @@ builder.Services.AddSingleton<IContext>(_ => new Context(settings.ConnectionStri
 builder.Services.AddTransient<IParameterRepository, MongoAdapter>();
 builder.Services.AddTransient<CreateParameterUseCase>();
 builder.Services.AddTransient<ReadParameterUseCase>();
-builder.Services.AddTransient<UpdateParameterUseCase>();
+builder.Services.AddTransient<UpdateParameterValuesUseCase>();
+builder.Services.AddTransient<UpdateParameterNameUseCase>();
 builder.Services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); });
 
 var app = builder.Build();

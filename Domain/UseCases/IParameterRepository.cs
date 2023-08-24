@@ -11,4 +11,6 @@ public interface IParameterRepository
     Task<Parameter> GetByName(string name);
 
     Task<Parameter> UpdateValues(Parameter parameter);
+
+    Task<Parameter> UpdateName(string oldName,string newName);
 }

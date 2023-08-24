@@ -12,14 +12,16 @@ public class ParameterController : ControllerBase
 {
     private readonly CreateParameterUseCase _createParameterUseCase;
     private readonly ReadParameterUseCase _readParameterUseCase;
-    private readonly UpdateParameterUseCase _updateParameterUseCase;
+    private readonly UpdateParameterValuesUseCase _updateParameterValuesUseCase;
+    private readonly UpdateParameterNameUseCase _updateParameterNameUseCase;
 
     public ParameterController(CreateParameterUseCase createParameterUseCase, ReadParameterUseCase readParameterUseCase,
-        UpdateParameterUseCase updateParameterUseCase)
+        UpdateParameterValuesUseCase updateParameterValuesUseCase, UpdateParameterNameUseCase updateParameterNameUseCase)
     {
         _createParameterUseCase = createParameterUseCase;
         _readParameterUseCase = readParameterUseCase;
-        _updateParameterUseCase = updateParameterUseCase;
+        _updateParameterValuesUseCase = updateParameterValuesUseCase;
+        _updateParameterNameUseCase = updateParameterNameUseCase;
     }
 
     [HttpGet]
@@ -37,6 +39,12 @@ public class ParameterController : ControllerBase
     [HttpPut("updatevalues")]
     public Task<Parameter> UpdateParameter(ParameterDto parameter)
     {
-        return _updateParameterUseCase.UpdateParameter(parameter.ToDomain());
+        return _updateParameterValuesUseCase.UpdateParameter(parameter.ToDomain());
+    }
+
+    [HttpPatch("updatename/{oldName}/{newName}")]
+    public Task<Parameter> UpdateName(string oldName, string newName)
+    {
+       return _updateParameterNameUseCase.UpdateParameterName(oldName, newName);
     }
 }

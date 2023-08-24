@@ -2,11 +2,11 @@ using Domain.Models;
 
 namespace Domain.UseCases;
 
-public class UpdateParameterUseCase
+public class UpdateParameterValuesUseCase
 {
     private readonly IParameterRepository _repository;
 
-    public UpdateParameterUseCase(IParameterRepository repository)
+    public UpdateParameterValuesUseCase(IParameterRepository repository)
     {
         _repository = repository;
     }
