@@ -12,6 +12,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("*")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+        });
+
 var settings = builder.Configuration.GetRequiredSection(nameof(MongoConnection)).Get<MongoConnection>();
 
 builder.Services.AddSingleton<IContext>(_ => new Context(settings.ConnectionString, settings.DatabaseName));
@@ -31,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
