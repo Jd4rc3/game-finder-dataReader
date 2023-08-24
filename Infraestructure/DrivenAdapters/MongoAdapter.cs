@@ -27,10 +27,13 @@ public class MongoAdapter : IParameterRepository
         return (await _context.Parameters.FindAsync(_ => true)).ToList().Select(x => x.ToDomain());
     }
 
-    public Task<Parameter> GetByName(string name)
+    public async Task<Parameter> GetByName(string name)
     {
-        return _context.Parameters.Find(x => x.Name.Equals(name)).FirstOrDefaultAsync()
-            .ContinueWith(x => x.Result.ToDomain());
+        var result = await _context.Parameters.Find(x => x.Name.Equals(name)).FirstOrDefaultAsync();
+
+        CheckNotFound(name, result);
+
+        return result.ToDomain();
     }
 
     public async Task<Parameter> UpdateValues(Parameter parameter)
@@ -41,17 +44,14 @@ public class MongoAdapter : IParameterRepository
             await _context.Parameters.FindOneAndUpdateAsync(param => param.Name.Equals(parameter.Name),
                 updateDefinition);
 
-        if (document == null)
-        {
-            throw new BusinessException($"Parameter with name \"{parameter.Name}\" not found",
-                HttpStatusCode.BadRequest);
-        }
+        CheckNotFound(parameter.Name, document);
 
         var result = document.ToDomain();
         result.Values = parameter.Values;
 
         return result;
     }
+
 
     public async Task<Parameter> UpdateName(string oldName, string newName)
     {
@@ -60,15 +60,30 @@ public class MongoAdapter : IParameterRepository
         var document =
             await _context.Parameters.FindOneAndUpdateAsync(param => param.Name.Equals(oldName), updateDefinition);
 
-        if (document == null)
-        {
-            throw new BusinessException($"Parameter with name \"{oldName}\" not found",
-                HttpStatusCode.BadRequest);
-        }
+        CheckNotFound(oldName, document);
 
         var result = document.ToDomain();
         result.Name = newName;
 
         return result;
+    }
+
+    public async Task<Parameter> Delete(string name)
+    {
+        var result = await _context.Parameters.FindOneAndDeleteAsync(param => param.Name.Equals(name));
+
+        CheckNotFound(name, result);
+
+        return result.ToDomain();
+    }
+
+
+    private static void CheckNotFound(string searchValue, ParameterEntity result)
+    {
+        if (result == null)
+        {
+            throw new BusinessException($"Parameter with name \'{searchValue}\' not found",
+                HttpStatusCode.NotFound);
+        }
     }
 }

@@ -20,6 +20,7 @@ builder.Services.AddTransient<CreateParameterUseCase>();
 builder.Services.AddTransient<ReadParameterUseCase>();
 builder.Services.AddTransient<UpdateParameterValuesUseCase>();
 builder.Services.AddTransient<UpdateParameterNameUseCase>();
+builder.Services.AddTransient<DeleteParameterUseCase>();
 builder.Services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); });
 
 var app = builder.Build();

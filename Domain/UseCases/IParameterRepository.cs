@@ -13,4 +13,6 @@ public interface IParameterRepository
     Task<Parameter> UpdateValues(Parameter parameter);
 
     Task<Parameter> UpdateName(string oldName,string newName);
+    
+    Task<Parameter> Delete(string name);
 }
