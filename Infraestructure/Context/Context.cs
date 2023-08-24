@@ -8,9 +8,9 @@ public class Context : IContext
     private readonly IMongoDatabase _database;
     public IMongoCollection<ParameterEntity> Parameters => _database.GetCollection<ParameterEntity>("parameters");
 
-    public Context(string conexion, string name)
+    public Context(string connection, string name)
     {
-        var mongoClient = new MongoClient(conexion);
+        var mongoClient = new MongoClient(connection);
         _database = mongoClient.GetDatabase(name);
     }
 }

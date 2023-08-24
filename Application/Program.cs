@@ -6,13 +6,11 @@ using Infraestructure.DrivenAdapters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// builder.Services.Configure<MongoConnection>(builder.Configuration.GetRequiredSection(nameof(MongoConnection)));
+
+builder.Configuration.AddEnvironmentVariables();
 
 var settings = builder.Configuration.GetRequiredSection(nameof(MongoConnection)).Get<MongoConnection>();
 

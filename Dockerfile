@@ -3,9 +3,17 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ARG MONGO_CONNECTION_STRING
+ARG MONGO_DATABASE_NAME
+
+ENV MongoConnection:ConnectionString=$MONGO_CONNECTION_STRING
+ENV MongoConnection:DatabaseName=$MONGO_DATABASE_NAME
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Application/Application.csproj", "Application/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Infraestructure/Infraestructure.csproj", "Infraestructure/"]
 RUN dotnet restore "Application/Application.csproj"
 COPY . .
 WORKDIR "/src/Application"
