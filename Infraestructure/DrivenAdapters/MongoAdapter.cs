@@ -1,6 +1,8 @@
+using System.Net;
 using Domain.Models;
 using Domain.UseCases;
 using Infraestructure.Context;
+using Infraestructure.Exceptions;
 using Infraestructure.Models;
 using MongoDB.Driver;
 
@@ -31,14 +33,22 @@ public class MongoAdapter : IParameterRepository
             .ContinueWith(x => x.Result.ToDomain());
     }
 
-    public async Task<Parameter> Update(Parameter parameter)
+    public async Task<Parameter> UpdateValues(Parameter parameter)
     {
-        var updateDefinition = Builders<ParameterEntity>.Update.Set(param => param.Values, parameter.Values);
+        var updateDefinition = Builders<ParameterEntity>.Update.Set((param) => param.Values, parameter.Values);
 
-        var result =
+        var document =
             await _context.Parameters.FindOneAndUpdateAsync(param => param.Name.Equals(parameter.Name),
                 updateDefinition);
+        
+        if (document == null)
+        {
+            throw new BusinessException($"Parameter with name \"{parameter.Name}\" not found", HttpStatusCode.BadRequest);
+        }
 
-        return result.ToDomain();
+        var result = document.ToDomain();
+        result.Values = parameter.Values;
+
+        return result;
     }
 }

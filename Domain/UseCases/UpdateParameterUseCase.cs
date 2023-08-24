@@ -13,6 +13,6 @@ public class UpdateParameterUseCase
 
     public Task<Parameter> UpdateParameter(Parameter parameter)
     {
-        return _repository.Update(parameter);
+        return _repository.UpdateValues(parameter);
     }
 }

@@ -1,3 +1,4 @@
+using Application;
 using Application.Settings;
 using Domain.UseCases;
 using Infraestructure.Context;
@@ -20,6 +21,7 @@ builder.Services.AddTransient<IParameterRepository, MongoAdapter>();
 builder.Services.AddTransient<CreateParameterUseCase>();
 builder.Services.AddTransient<ReadParameterUseCase>();
 builder.Services.AddTransient<UpdateParameterUseCase>();
+builder.Services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); });
 
 var app = builder.Build();
 

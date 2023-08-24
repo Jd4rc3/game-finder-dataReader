@@ -14,8 +14,8 @@ public static class Caster
             Values = parameter.Values
         };
     }
-    
-    
+
+
     public static Parameter ToDomain(this ParameterEntity parameter)
     {
         return new()
@@ -25,6 +25,13 @@ public static class Caster
             Values = parameter.Values
         };
     }
-    
-    
+
+    public static Parameter ToDomain(this ParameterDto parameter)
+    {
+        return new()
+        {
+            Name = parameter.Name,
+            Values = parameter.Values
+        };
+    }
 }
