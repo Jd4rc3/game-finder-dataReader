@@ -46,13 +46,13 @@ public class ParameterController : ControllerBase
         return _createParameterUseCase.CreateParameter(parameter.ToDomain());
     }
 
-    [HttpPut("updatevalues")]
+    [HttpPut("changeValues")]
     public Task<Parameter> UpdateParameter(ParameterDto parameter)
     {
         return _updateParameterValuesUseCase.UpdateParameter(parameter.ToDomain());
     }
 
-    [HttpPatch("updatename/{oldName}/{newName}")]
+    [HttpPatch("changeName/{oldName}/{newName}")]
     public Task<Parameter> UpdateName(string oldName, string newName)
     {
         return _updateParameterNameUseCase.UpdateParameterName(oldName, newName);

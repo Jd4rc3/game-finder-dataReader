@@ -8,6 +8,7 @@ ARG MONGO_DATABASE_NAME
 
 ENV MongoConnection:ConnectionString=$MONGO_CONNECTION_STRING
 ENV MongoConnection:DatabaseName=$MONGO_DATABASE_NAME
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
