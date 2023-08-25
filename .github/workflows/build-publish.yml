@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -25,7 +27,7 @@ jobs:
         id: get_version
         run: |
           # Get the current version from the latest git tag
-          CURRENT_VERSION=$(git describe --tags --abbrev=0)
+          CURRENT_VERSION=$(git describe --tags --abbrev=0 --tags)
           IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
           MAJOR=${VERSION_PARTS[0]}
           MINOR=${VERSION_PARTS[1]}
@@ -61,5 +63,5 @@ jobs:
           context: .
           push: true
           tags: |
-            user/image-name:${{ steps.get_version.outputs.version }}
-            user/image-name:latest
+            jdarc3/data-reader:${{ steps.get_version.outputs.version }}
+            jdarc3/data-reader:latest
