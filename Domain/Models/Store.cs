@@ -4,7 +4,7 @@ namespace Domain.Models
     {
         public string Name { get; set; }
         
-        public string commonName { get; set; }
+        public string CommonName { get; set; }
 
         public string ValueName { get; set; }
     }
