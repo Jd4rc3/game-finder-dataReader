@@ -2,11 +2,39 @@ name: Build and Publish Docker Image
 
 on:
   pull_request:
-    types: [closed]
+    types: [ closed ]
 
 jobs:
+  check-dockerignore:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check-dockerignore.outputs.should_skip }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Check if changed files are in .dockerignore
+        id: check-dockerignore
+        run: |
+          # Get the list of changed files
+          PR_NUMBER=${{ github.event.number }}
+          CHANGED_FILES=$(curl -s -X GET -G https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/files | jq -r '.[].filename')
+
+          # Check if any of the changed files are in .dockerignore
+          SHOULD_SKIP=false
+          while read -r file; do
+            if grep -q "^$file$" .dockerignore; then
+              SHOULD_SKIP=true
+              break
+            fi
+          done <<< "$CHANGED_FILES"
+
+          # Set the output variable
+          echo "::set-output name=should_skip::$SHOULD_SKIP"
+
   build-and-publish:
-    if: github.event.pull_request.merged == true
+    needs: check-dockerignore
+    if: needs.check-dockerignore.outputs.should_skip == 'false' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
