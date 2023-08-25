@@ -63,5 +63,5 @@ jobs:
           context: .
           push: true
           tags: |
-            user/image-name:${{ steps.get_version.outputs.version }}
-            user/image-name:latest
+            jdarc3/data-reader:${{ steps.get_version.outputs.version }}
+            jdarc3/data-reader:latest
