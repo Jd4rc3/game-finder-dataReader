@@ -17,6 +17,7 @@ jobs:
         id: check-dockerignore
         run: |
           # Get the list of changed files
+
           CHANGED_FILES=$(curl -s -X GET -G https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.number }}/files | jq -r '.[].filename')
 
           # Check if any of the changed files are in .dockerignore
