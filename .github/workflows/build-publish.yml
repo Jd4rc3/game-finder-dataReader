@@ -25,7 +25,7 @@ jobs:
         id: get_version
         run: |
           # Get the current version from the latest git tag
-          CURRENT_VERSION=$(git describe --tags --abbrev=0)
+          CURRENT_VERSION=$(git describe --tags --abbrev=0 --tags)
           IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
           MAJOR=${VERSION_PARTS[0]}
           MINOR=${VERSION_PARTS[1]}
