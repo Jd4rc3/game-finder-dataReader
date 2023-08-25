@@ -53,4 +53,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/image-name:${{ steps.get_version.outputs.version }}
+          tags: |
+            user/image-name:${{ steps.get_version.outputs.version }}
+            user/image-name:latest
