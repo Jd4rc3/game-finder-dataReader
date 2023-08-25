@@ -48,6 +48,13 @@ jobs:
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "::set-output name=version::$NEW_VERSION"
 
+      - name: Create a git tag
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag ${{ steps.get_version.outputs.version }}
+          git push origin --tags
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
